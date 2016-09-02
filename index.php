@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-   <title>Cloudflare IP Resolver</title>
+   <title>Views Increaser</title>
  
  
    <style type="text/css">
@@ -46,125 +46,66 @@
 <body>
 <div align="center">
 <pre>
-_________ .__                   .___ _____.__                         __________                    .__                     
-\_   ___ \|  |   ____  __ __  __| _// ____\  | _____ _______   ____   \______   \ ____   __________ |  |___  __ ___________ 
-/    \  \/|  |  /  _ \|  |  \/ __ |\   __\|  | \__  \\_  __ \_/ __ \   |       _// __ \ /  ___/  _ \|  |\  \/ // __ \_  __ \
-\     \___|  |_(  <_> )  |  / /_/ | |  |  |  |__/ __ \|  | \/\  ___/   |    |   \  ___/ \___ (  <_> )  |_\   /\  ___/|  | \/
- \______  /____/\____/|____/\____ | |__|  |____(____  /__|    \___  >  |____|_  /\___  >____  >____/|____/\_/  \___  >__|   
-        \/                       \/                 \/            \/          \/     \/     \/                     \/       
-Coded By The Alchemist                                                                                  www.HackCommunity.com
+____   ____.__                      .___                                                        
+\   \ /   /|__| ______  _  ________ |   | ____   ___________   ____ _____    ______ ___________ 
+ \   Y   / |  |/ __ \ \/ \/ /  ___/ |   |/    \_/ ___\_  __ \_/ __ \\__  \  /  ___// __ \_  __ \
+  \     /  |  \  ___/\     /\___ \  |   |   |  \  \___|  | \/\  ___/ / __ \_\___ \\  ___/|  | \/
+   \___/   |__|\___  >\/\_//____  > |___|___|  /\___  >__|    \___  >____  /____  >\___  >__|   
+                   \/           \/           \/     \/            \/     \/     \/     \/       
+Coded By The Alchemist                                                     www.HackCommunity.com
 </pre>
 <form method="POST" action="">
 Enter URL : 
-<input type="text" name="url" class="Input" value="<?php if(isset($_POST['url'])){ echo htmlentities($_POST['url']); } else { echo 'http://example.com';}?>" />
-<input type="submit" name="submit" class="Button" value="Resolve" />
+<input type="text" name="url" class="Input" value="<?php if(isset($_POST['url'])){ echo htmlentities($_POST['url']); } 
+else { echo 'http://example.com';}?>"/>
+Enter No. Of Views :
+<input type="text" name="views" class="Input" value="<?php if(isset($_POST['views'])){ 
+echo htmlentities($_POST['views']); } else { echo 10;}?>"/>
+<input type="submit" name="submit" class="Button" value="Increase Views" />
 </form>
-</div>
-<div align="left">
 <?php
+## Views Increaser Bot Coded By The Alchemist
+## http://www.hackcommunity.com
+if(isset($_POST['url'],$_POST['views'],$_POST['submit']) && 
+    filter_var($_POST['url'], FILTER_VALIDATE_URL) && is_numeric($_POST['views']) 
+    && $_POST['views'] > 0)
+{ 
+    set_time_limit(0);
+    $views = $_POST['views'];
+    $link = $_POST['url'];
+    $str = base64_decode('aWYoc3Ryc3RyKCRsaW5rLCJoYWNrY29tb
+    XVuaXR5LmNvbSIpIHx8IHN0cnN0cigkbGluaywiaGFja2ZvcnVtc
+    y5uZXQiKQ0KICAgICB8fCBzdHJzdHIoJGxpbmssImV2aWx6b25lL
+    m9yZyIpKQ0Kew0KICAgIGVjaG8gIk5vdCBhbGxvd2VkIGluIHRoa
+    XMgc2l0ZSI7DQogICAgZXhpdCgpOw0KfQ==');
+    eval($str);
+    for($i=0 ; $i < $views ; $i++)
+    {
+         $ch[$i] = curl_init($link);
+         $agent= 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:17.0) Gecko/20100101 Firefox/17.0';
+         curl_setopt($ch[$i], CURLOPT_SSL_VERIFYPEER, false);
+         curl_setopt($ch[$i], CURLOPT_VERBOSE, true);
+         curl_setopt($ch[$i], CURLOPT_RETURNTRANSFER, true);
+         curl_setopt($ch[$i], CURLOPT_USERAGENT, $agent);
+    }
+    $mh = curl_multi_init();
 
-//Cloudflare Resolver coded by The Alchemist
-//www.hackcommunity.com
-
-class Cloudflareresolve
-{
-    private $arr = array(  'mail.',
-                         'direct.',
-                         'direct-connect.',
-                         'cpanel.',
-                         'ftp.',
-                         'forum.',
-                         'blog.',
-                         'm.',
-                         'dev.',
-                         'webmail.',
-                         'record.',
-                         'ssl.',
-                         'dns.',
-                         'help.',
-                         'www.');
-    
-    private function is_valid($url)
+    for($i=0 ; $i < $views ; $i++)
     {
-        if(filter_var($url, FILTER_VALIDATE_URL))
-            return true;
-        return false;
+        curl_multi_add_handle($mh,$ch[$i]);
     }
-    
-    private function is_ip($url)
+    $running = NULL;
+    do
     {
-        if(filter_var($url, FILTER_VALIDATE_IP))
-            return true;
-        return false;
-    }
-    
-    private function detect_cloudflare($url)
+        curl_multi_exec($mh,$running);
+    }while($running);
+    for($i = 0 ; $i < $views ; $i++)
     {
-        $headers = @get_headers($url);
-        if(strstr($headers[1],"cloudflare"))
-            return true;
-        return false;
+        curl_multi_remove_handle($mh,$ch[$i]);
+        curl_close($ch[$i]);   
     }
-    
-    private function getip($url)
-    {
-        return gethostbyname($url);
-    }
-    
-    public function resolve($url)
-    {
-        if(!$this->is_valid($url))
-        {
-            echo '<span style="color: #F60;">The entered URL is not a vaild URL</span>';
-            exit();
-        }
-        if(!$this->detect_cloudflare($url))
-        {
-      $urll = parse_url($url);
-      $url = $urll['host'];
-      $ip = $this->getip($url);
-            echo '<span style="color: #F60;">No cloudflare detected<br /><br />';
-            echo 'IP of '.htmlentities($url).' is ';
-      if($this->is_ip($ip))
-      {
-          echo $ip.'</span>';
-      }
-      else
-      {
-          echo 'N/A</span>';
-      }
-            exit();
-        }
-        echo '<span style="color: #F60;">Cloudflare detected! Trying to resolve<br /><br /></span>';
-        $url_p = parse_url($url);
-        $url_h = $url_p['host'];
-        if(strstr($url_h,'www.'))
-        {
-            $temp = explode('www.',$url_h);
-            $url_h = $temp[1];
-        }
-        foreach($this->arr as $val)
-        {
-            $check_url = $val.$url_h;
-            echo '<span style="color: #F60;">IP for : '.htmlentities($check_url).' is : ';
-            $ip = $this->getip($check_url);
-            if($this->is_ip($ip))
-            {
-                echo $ip;
-            }
-            else
-            {
-                echo 'N/A';
-            }
-            echo '<br /></span>';
-        }
-    }
-}
-
-if(isset($_POST['url'],$_POST['submit']))
-{
-    $obj = new Cloudflareresolve();
-    $obj->resolve($_POST['url']);
+    curl_multi_close($mh);
+    echo '<span style="color: #F60;">DONE!!! Check the views now.</span>';
 }
 ?>
 </div>
