@@ -1,51 +1,172 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="author" content="The Alchemist"/>
-<title>
-The Alchemist Fake Mailer
-</title>
+   <title>Cloudflare IP Resolver</title>
+ 
+ 
+   <style type="text/css">
+   
+      body
+      {
+         color: #F60;
+         text-shadow: 2px 1px #333;
+         background-color: #000;
+         font-family: Arial, Helvetica, sans-serif;
+      }
+     
+      input
+      {
+         font-family: Arial, Helvetica, sans-serif;
+      }
+     
+      .Button
+      {
+         padding: 5px 10px;
+         background: #333;
+         border: solid #101010 2px;
+         color: #F60;
+         cursor: pointer;
+         font-weight: bold;
+         border-radius: 5px;
+         -moz-border-radius: 5px;
+         -webkit-border-radius: 5px;
+         text-shadow: 1px 1px #000;
+      }
+     
+      .Input
+      {
+         border: solid #101010 1px;
+         color: white;
+         font-weight: bold;
+         padding: 3px;
+         background-color: #252525;
+      }
+    </style>
 </head>
-<body background="http://fc00.deviantart.net/fs70/i/2011/324/9/2/black___purple_textures_by_paralyzinglove-d4gscvx.jpg">
-<p align=center>
-<img src="http://i67.photobucket.com/albums/h298/bcfcrule11/theAlchemist.png" alt="The Alchemist Fake Mailer" /></p>
-<form name="fakemail" action="<?php $PHP_SELF; ?>" method="POST">
-<p><label for="fname"><b><font size="5" color=c0c0c0>From name :</b></font></label><br>
-<input name="fname" id="fname" type="text" class="formbox" /><br></p>
-<p><label for="femail"><font size="5" color=c0c0c0>From email id :</font></label><br>
-<input name="femail" id="femail" type="text" class="formbox" /><br></p>
-<p><label for="to"><font size="5" color=c0c0c0>To :</font></label><br>
-<input name="to" id="to" type="text" class="formbox"/><br></p>
-<p><label for="subject"><font size="5" color=c0c0c0>Subject :</font></label><br>
-<input name="subject" id="subject" type="text" class="formbox"/><br></p>
-<p><label for="message"><font size="5" color=c0c0c0>Message :</font></label><br>
-<textarea name="message" id="message" cols="60" rows="8"></textarea></p>
-<p><input name="submit" id="submit" type="submit" value="Send!!" /></p></form>
+<body>
+<div align="center">
+<pre>
+_________ .__                   .___ _____.__                         __________                    .__                     
+\_   ___ \|  |   ____  __ __  __| _// ____\  | _____ _______   ____   \______   \ ____   __________ |  |___  __ ___________ 
+/    \  \/|  |  /  _ \|  |  \/ __ |\   __\|  | \__  \\_  __ \_/ __ \   |       _// __ \ /  ___/  _ \|  |\  \/ // __ \_  __ \
+\     \___|  |_(  <_> )  |  / /_/ | |  |  |  |__/ __ \|  | \/\  ___/   |    |   \  ___/ \___ (  <_> )  |_\   /\  ___/|  | \/
+ \______  /____/\____/|____/\____ | |__|  |____(____  /__|    \___  >  |____|_  /\___  >____  >____/|____/\_/  \___  >__|   
+        \/                       \/                 \/            \/          \/     \/     \/                     \/       
+Coded By The Alchemist                                                                                  www.HackCommunity.com
+</pre>
+<form method="POST" action="">
+Enter URL : 
+<input type="text" name="url" class="Input" value="<?php if(isset($_POST['url'])){ echo htmlentities($_POST['url']); } else { echo 'http://example.com';}?>" />
+<input type="submit" name="submit" class="Button" value="Resolve" />
+</form>
+</div>
+<div align="left">
 <?php
-//Fake mailer code created by The Alchemist
-function send_email($to=null,$subject=null,$from_name=null,$from_mail=null,$mail_content=null,$replyto=null)
+
+//Cloudflare Resolver coded by The Alchemist
+//www.hackcommunity.com
+
+class Cloudflareresolve
 {
-    $headers = "From: \"".$from_name."\" <".$from_mail.">\r\nReply-To: ".$replyto."\r\n";//here's the main part
-    if(@mail($to,$subject,$mail_content,$headers))
+    private $arr = array(  'mail.',
+                         'direct.',
+                         'direct-connect.',
+                         'cpanel.',
+                         'ftp.',
+                         'forum.',
+                         'blog.',
+                         'm.',
+                         'dev.',
+                         'webmail.',
+                         'record.',
+                         'ssl.',
+                         'dns.',
+                         'help.',
+                         'www.');
+    
+    private function is_valid($url)
     {
-        $mail_send_result="<p><font size=4 color=#c0c0c0>Email successfully sent to $to.!!</font></p>";//If mail gets sent successfully
+        if(filter_var($url, FILTER_VALIDATE_URL))
+            return true;
+        return false;
     }
-    else
+    
+    private function is_ip($url)
     {
-        $mail_send_result="<p><font size=4 color=#c0c0c0>Email NOT sent to $to.</font></p>";//If mail does not get sent
+        if(filter_var($url, FILTER_VALIDATE_IP))
+            return true;
+        return false;
     }
-    return $mail_send_result;
+    
+    private function detect_cloudflare($url)
+    {
+        $headers = @get_headers($url);
+        if(strstr($headers[1],"cloudflare"))
+            return true;
+        return false;
+    }
+    
+    private function getip($url)
+    {
+        return gethostbyname($url);
+    }
+    
+    public function resolve($url)
+    {
+        if(!$this->is_valid($url))
+        {
+            echo '<span style="color: #F60;">The entered URL is not a vaild URL</span>';
+            exit();
+        }
+        if(!$this->detect_cloudflare($url))
+        {
+      $urll = parse_url($url);
+      $url = $urll['host'];
+      $ip = $this->getip($url);
+            echo '<span style="color: #F60;">No cloudflare detected<br /><br />';
+            echo 'IP of '.htmlentities($url).' is ';
+      if($this->is_ip($ip))
+      {
+          echo $ip.'</span>';
+      }
+      else
+      {
+          echo 'N/A</span>';
+      }
+            exit();
+        }
+        echo '<span style="color: #F60;">Cloudflare detected! Trying to resolve<br /><br /></span>';
+        $url_p = parse_url($url);
+        $url_h = $url_p['host'];
+        if(strstr($url_h,'www.'))
+        {
+            $temp = explode('www.',$url_h);
+            $url_h = $temp[1];
+        }
+        foreach($this->arr as $val)
+        {
+            $check_url = $val.$url_h;
+            echo '<span style="color: #F60;">IP for : '.htmlentities($check_url).' is : ';
+            $ip = $this->getip($check_url);
+            if($this->is_ip($ip))
+            {
+                echo $ip;
+            }
+            else
+            {
+                echo 'N/A';
+            }
+            echo '<br /></span>';
+        }
+    }
 }
-if(isset($_POST['to']) && isset($_POST['fname']) && isset($_POST['femail']) 
-&& isset($_POST['message']) && isset($_POST['subject']) && isset($_POST['submit']))
+
+if(isset($_POST['url'],$_POST['submit']))
 {
-    $from_name=$_POST['fname'];
-    $from_mail=$_POST['femail'];
-    $mail_content=$_POST['message'];
-    $to=$_POST['to'];
-    $subject=$_POST['subject'];
-    $replyto=$_POST['femail'];
-    echo send_email($to,$subject,$from_name,$from_mail,$mail_content,$replyto);
+    $obj = new Cloudflareresolve();
+    $obj->resolve($_POST['url']);
 }
 ?>
+</div>
 </body>
 </html> 
