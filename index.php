@@ -6,8 +6,9 @@ $clientip = $_SERVER['REMOTE_ADDR'];
 
 $api = file_get_contents("http://freegeoip.net/xml/{$clientip}");
 
+$Response = new SimpleXMLElement($xmlstr);
 
+echo $api->Response[0]->IP;
 
-echo ($api);
 
 ?>
