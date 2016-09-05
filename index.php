@@ -10,4 +10,8 @@ echo $api->Response[0]->IP;
 echo $api->Response[0]->CountryName;
 echo $api->Response[0]->City;
 
+$movies = new SimpleXMLElement($xmlstr);
+
+echo $movies->Response[0]->IP;
+
 ?>
