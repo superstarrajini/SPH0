@@ -1,13 +1,11 @@
-<?php
 
-header("Content-Type: text/xml");
+<?php
 
 $clientip = $_SERVER['REMOTE_ADDR'];
 
-$api = ("http://freegeoip.net/xml/{$clientip}");
+
+$api = file_get_contents("http://ip-api.com/xml/{$clientip}");
 
 
-echp ($api);
-
+echo "$api";
 ?>
-
