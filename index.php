@@ -5,7 +5,7 @@
     * {
  font-size: 100%;
  font-family: Arial;
- font-color: red;
+ color: red;
 }
     
   </style>
