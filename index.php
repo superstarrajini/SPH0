@@ -6,7 +6,12 @@
  font-size: 100%;
  font-family: Arial;
  color: red;
+ .one-word-per-line {
+    word-spacing: <100px>; 
+} 
+
 }
+
     
   </style>
 </html>
