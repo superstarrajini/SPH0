@@ -1,4 +1,15 @@
-
+<html>
+  
+  <style>
+    
+    * {
+ font-size: 100%;
+ font-family: Arial;
+ font-color: Red;
+}
+    
+  </style>
+</html>
 <?php
 header('Content-Type: text/html');
 
