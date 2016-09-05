@@ -1,18 +1,7 @@
 <html>
-  
-  <style>
-    
-    * {
- font-size: 100%;
- font-family: Arial;
- color: red;
- display:table-caption;
 
-      
-    } 
+  <link rel="stylesheet" type="text/css" href="style.css">
 
-    
-  </style>
 </html>
 <?php
 header('Content-Type: text/html');
