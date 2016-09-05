@@ -1,13 +1,13 @@
 <?php
 
-header('Content-Type: text/xml');
+header("Content-Type: text/plain");
 
 $clientip = $_SERVER['REMOTE_ADDR'];
 
-$api = htmlentities("http://freegeoip.net/xml/{$clientip}");
+$api = ("http://freegeoip.net/xml/{$clientip}");
 
 
-echo $api;
+var_dump($api);
 
 ?>
 
