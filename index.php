@@ -1,6 +1,6 @@
 <html>
 
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="http://waftrue.comxa.com/style.css">
 
 </html>
 <?php
