@@ -1,6 +1,6 @@
 
 <?php
-header('Content-Type: text/xml');
+header('Content-Type: text/html');
 
 
 $clientip = $_SERVER['REMOTE_ADDR'];
