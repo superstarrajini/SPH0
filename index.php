@@ -6,8 +6,10 @@
  font-size: 100%;
  font-family: Arial;
  color: red;
-  word-break: break-all;
-} 
+ display:table-caption;
+
+      
+    } 
 
     
   </style>
