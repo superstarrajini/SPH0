@@ -7,6 +7,7 @@ $clientip = $_SERVER['REMOTE_ADDR'];
 $api = ("http://freegeoip.net/xml/{$clientip}");
 
 
-echp $api;
+echp ($api);
+
 ?>
 
